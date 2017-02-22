@@ -28,8 +28,8 @@ class Carte {
         int findIndex(Case& searchCase ) const;
         int getIndexPosition(Case& position);
         void updateConstraint(Case& position);
-        Case getMinimalRemainingValue(); //FIXME: return pointer *****
-        void ac3();
+        Case* getMinimalRemainingValue();
+        bool ac3();
 
 
 
@@ -47,6 +47,11 @@ inline ostream &operator<<( ostream &out, Carte &c )
 {
     int position = 0;
     for(int positionX=0; positionX < c.getSizeX(); ++positionX){
+
+        if(positionX%3 == 0) {
+            out << " -------------------------------------\n";
+        }
+
         out << " | ";
         for(int positionY =0; positionY < c.getSizeY(); ++ positionY){
             out<< c.getCase(position) << " | ";

@@ -106,6 +106,7 @@ void Carte::updateConstraint(Case& position) {
         currentCase.addConstraint(value);
     }
 
+    //Update 3x3 constraint
     int topLeftCaseX = (int)(lineX / 3) * 3;
     int topLeftCaseY = (int)(lineY / 3) * 3;
     for(int i=0; i<3; i++) {
@@ -117,16 +118,16 @@ void Carte::updateConstraint(Case& position) {
 
 }
 
-Case Carte::getMinimalRemainingValue() {
+Case* Carte::getMinimalRemainingValue() {
     int minimalRemaining = INT_MAX;
-    Case minimalRemaningValue = m_cases.at(0);
+    Case* minimalRemaningValue = nullptr;
 
     for(Case& currentCase : m_cases) {
         if(currentCase.getValue()==0) {
             int remainingPossibilities = currentCase.getNumberOfPossiblities();
             if(remainingPossibilities<minimalRemaining) {
                 minimalRemaining = remainingPossibilities;
-                minimalRemaningValue = currentCase;
+                minimalRemaningValue = &currentCase;
             }
         }
 
@@ -136,19 +137,24 @@ Case Carte::getMinimalRemainingValue() {
 }
 
 //Arc consistency algorithm
-void Carte::ac3() {
-    Case currentCase = getMinimalRemainingValue();
+bool Carte::ac3() {
+    Case* currentCase = getMinimalRemainingValue();
 
-    bool valueFound = false;
+    if(currentCase != nullptr) {
+        bool valueFound = false;
 
-    int value=1;
-    while(!valueFound && value < 10) {
-        if(currentCase.isValuePossible(value)) {
-            //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
-            currentCase.setValue(value);
-            currentCase.addConstraint(value);
-            valueFound = true;
+        int value=1;
+        while(!valueFound && value < 10) {
+            if(currentCase->isValuePossible(value)) {
+                //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
+                currentCase->setValue(value);
+                updateConstraint(*currentCase);
+                valueFound = true;
+            }
+            value++;
         }
-        value++;
+        return true;
     }
+
+    return false;
 }
