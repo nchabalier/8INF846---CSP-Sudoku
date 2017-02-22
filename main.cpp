@@ -7,12 +7,10 @@ int main() {
     Carte carte = Carte("../data/grid.txt");
     cout << carte << endl;
 
-    /*std::ifstream is;
-    is.open("../data/grid.txt");
-
-    char c;
-    while (is.get(c))
-        std::cout << c;*/
+    while(true) {
+        carte.ac3();
+        cout << carte << endl;
+    }
 
     return 0;
 }

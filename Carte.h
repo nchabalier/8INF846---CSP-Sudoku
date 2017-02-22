@@ -27,6 +27,9 @@ class Carte {
         Case& getCase(int position);
         int findIndex(Case& searchCase ) const;
         int getIndexPosition(Case& position);
+        void updateConstraint(Case& position);
+        Case getMinimalRemainingValue(); //FIXME: return pointer *****
+        void ac3();
 
 
 

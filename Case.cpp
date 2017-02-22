@@ -13,6 +13,7 @@ Case::Case(int x, int y, int value) {
     m_x = x;
     m_y = y;
     m_value = value;
+    m_constraint.push_back(value);
 }
 
 Case::~Case() {
@@ -30,4 +31,28 @@ int Case::getPositionX() const {
 
 int Case::getPositionY() const {
     return m_y;
+}
+
+int Case::getValue() const {
+    return m_value;
+}
+
+void Case::addConstraint(int value) {
+    if(value != 0) {
+        if(std::find(m_constraint.begin(), m_constraint.end(), value) == m_constraint.end()) {
+            m_constraint.push_back(value);
+        }
+    }
+}
+
+void Case::setValue(int value) {
+    m_value = value;
+}
+
+int Case::getNumberOfPossiblities() const {
+    return 9-m_constraint.size();
+}
+
+bool Case::isValuePossible(int value) const {
+    return std::find(m_constraint.begin(), m_constraint.end(), value) == m_constraint.end();
 }

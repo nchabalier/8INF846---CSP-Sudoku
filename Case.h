@@ -1,6 +1,8 @@
 #ifndef INC_8INF846_TP1_CASE_H
 #define INC_8INF846_TP1_CASE_H
 
+#include <vector>
+#include <algorithm>
 #include "iostream"
 
 using namespace std;
@@ -15,6 +17,11 @@ class Case {
 
     int getPositionX() const;
     int getPositionY() const;
+    int getValue() const;
+    void addConstraint(int value);
+    void setValue(int value);
+    int getNumberOfPossiblities() const;
+    bool isValuePossible(int value) const;
 
 
 
@@ -29,6 +36,7 @@ private :
         int m_x;
         int m_y;
         int m_value;
+        std::vector<int> m_constraint;
 };
 
 inline ostream &operator<<( ostream &out, Case &c )
