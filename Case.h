@@ -22,8 +22,7 @@ class Case {
     void setValue(int value);
     int getNumberOfPossiblities() const;
     bool isValuePossible(int value) const;
-
-
+    std::vector<int> getConstraints() const;
 
 
 
@@ -37,6 +36,7 @@ private :
         int m_y;
         int m_value;
         std::vector<int> m_constraint;
+
 };
 
 inline ostream &operator<<( ostream &out, Case &c )

@@ -56,3 +56,7 @@ int Case::getNumberOfPossiblities() const {
 bool Case::isValuePossible(int value) const {
     return std::find(m_constraint.begin(), m_constraint.end(), value) == m_constraint.end();
 }
+
+std::vector<int> Case::getConstraints() const {
+    return m_constraint;
+}

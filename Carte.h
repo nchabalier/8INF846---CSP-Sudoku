@@ -30,10 +30,12 @@ class Carte {
         void updateConstraint(Case& position);
         Case* getMinimalRemainingValue();
         bool ac3();
+        vector<pair<Case, vector<int>>> ac3(vector<pair<Case, vector<int>>> csp);
+        bool removeInconsistentValues(Case& currentCase);
 
 
 
-        friend ostream& operator<<(ostream& os, Carte& c);
+    friend ostream& operator<<(ostream& os, Carte& c);
 
 
     private:

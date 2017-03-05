@@ -22,9 +22,9 @@ Carte::Carte(string file) {
     //std::getline(is, line );
     int posX = 0;
     while (getline( is, line )) {
-        int posY=0;
-        for(char c : line) {
-            Case& currentCase = m_cases.at(posX*m_sizeX+posY);
+        int posY = 0;
+        for (char c : line) {
+            Case &currentCase = m_cases.at(posX * m_sizeX + posY);
             currentCase.setValue((int) c - 48);
             updateConstraint(currentCase);
             posY++;
@@ -119,7 +119,7 @@ void Carte::updateConstraint(Case& position) {
 }
 
 Case* Carte::getMinimalRemainingValue() {
-    int minimalRemaining = INT_MAX;
+    int minimalRemaining = INT8_MAX;
     Case* minimalRemaningValue = nullptr;
 
     for(Case& currentCase : m_cases) {
@@ -139,7 +139,6 @@ Case* Carte::getMinimalRemainingValue() {
 //Arc consistency algorithm
 bool Carte::ac3() {
     Case* currentCase = getMinimalRemainingValue();
-
     if(currentCase != nullptr) {
         bool valueFound = false;
 
@@ -147,6 +146,7 @@ bool Carte::ac3() {
         while(!valueFound && value < 10) {
             if(currentCase->isValuePossible(value)) {
                 //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
+
                 currentCase->setValue(value);
                 updateConstraint(*currentCase);
                 valueFound = true;
@@ -157,4 +157,43 @@ bool Carte::ac3() {
     }
 
     return false;
+}
+
+vector<pair<Case, vector<int>>> Carte::ac3(vector<pair<Case, vector<int>>> csp){
+    Case* currentCase = getMinimalRemainingValue();
+
+    while(currentCase!= nullptr){
+
+        if(removeInconsistentValues(*currentCase)){
+            for(pair<Case, vector<int>>& caseCSP : csp){
+                if(caseCSP.first == *currentCase){
+                    caseCSP.second = currentCase->getConstraints();
+                }
+            }
+        }
+        currentCase = getMinimalRemainingValue();
+
+    }
+    return csp;
+}
+
+bool Carte::removeInconsistentValues(Case & currentCase) {
+    if(&currentCase != nullptr) {
+        bool valueFound = false;
+        int value=1;
+        while(!valueFound && value < 10) {
+            if(currentCase.isValuePossible(value)) {
+                //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
+
+                currentCase.setValue(value);
+                updateConstraint(currentCase);
+                cout << "PositionX :" << currentCase.getPositionX() << ", PositionY : " << currentCase.getPositionY() << ", Valeur :" << currentCase.getValue() << endl;
+                return true;
+            }
+            value++;
+        }
+    }
+
+    return false;
+
 }
