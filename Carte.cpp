@@ -187,7 +187,7 @@ bool Carte::removeInconsistentValues(Case & currentCase) {
 
                 currentCase.setValue(value);
                 updateConstraint(currentCase);
-                cout << "PositionX :" << currentCase.getPositionX() << ", PositionY : " << currentCase.getPositionY() << ", Valeur :" << currentCase.getValue() << endl;
+                //cout << "PositionX :" << currentCase.getPositionX() << ", PositionY : " << currentCase.getPositionY() << ", Valeur :" << currentCase.getValue() << endl;
                 return true;
             }
             value++;
