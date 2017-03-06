@@ -145,13 +145,13 @@ bool Carte::ac3() {
         int value=1;
         while(!valueFound && value < 10) {
             if(currentCase->isValuePossible(value)) {
-                //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
 
                 currentCase->setValue(value);
                 updateConstraint(*currentCase);
                 valueFound = true;
             }
             value++;
+
         }
         return true;
     }
@@ -161,39 +161,73 @@ bool Carte::ac3() {
 
 vector<pair<Case, vector<int>>> Carte::ac3(vector<pair<Case, vector<int>>> csp){
     Case* currentCase = getMinimalRemainingValue();
-
-    while(currentCase!= nullptr){
+    while(currentCase!=0){
 
         if(removeInconsistentValues(*currentCase)){
             for(pair<Case, vector<int>>& caseCSP : csp){
                 if(caseCSP.first == *currentCase){
                     caseCSP.second = currentCase->getConstraints();
                 }
+
             }
         }
+        else{
+            //Si on ne réussit pas à rajouter de nouvelles valeurs on charge la carte où on devait choisir entre plusieurs possibilités
+            while(m_saved_cases.back().second.size()<=1){
+                //Si on ne peut pas tester de nouvelles valeurs, on revient plus en arrière
+                m_saved_cases.pop_back();
+            }
+                //Une fois qu'on a trouvé une carte où il reste des valeurs à tester, on charge la carte
+                m_saved_cases.back().second.erase(m_saved_cases.back().second.begin());
+                m_cases = m_saved_cases.back().first;
+        }
+        cout << "NOUVEAU TOUR : CASE : " << currentCase->getPositionX() << ", " << currentCase->getPositionY() << " : " << *currentCase << endl;
+        cout << *this << endl;
         currentCase = getMinimalRemainingValue();
 
+
     }
+
     return csp;
 }
 
 bool Carte::removeInconsistentValues(Case & currentCase) {
     if(&currentCase != nullptr) {
+        vector<int> possibleValues;
         bool valueFound = false;
         int value=1;
         while(!valueFound && value < 10) {
-            if(currentCase.isValuePossible(value)) {
-                //TODO: Add the constraint and see if one of the neighbors cases have 0 possible value
 
-                currentCase.setValue(value);
-                updateConstraint(currentCase);
-                //cout << "PositionX :" << currentCase.getPositionX() << ", PositionY : " << currentCase.getPositionY() << ", Valeur :" << currentCase.getValue() << endl;
-                return true;
+            if(currentCase.isValuePossible(value)) {
+                possibleValues.push_back(value);
             }
+
             value++;
         }
+        //On verifie le nombre de possibilité
+        if(possibleValues.size() > 1) {
+            //Si il ya plusieurs possibilités, on choisis le cas suivant en cas de chargement réussi ou on sauvegarde la carte
+            if (m_saved_cases.size() > 0 && m_saved_cases.back().first == this->getCases()) {
+                currentCase.setValue(m_saved_cases.back().second.front());
+                updateConstraint(currentCase);
+            } else {
+                //on sauvegarde la map
+                m_saved_cases.push_back(make_pair(m_cases, possibleValues));
+
+                currentCase.setValue(possibleValues.front());
+                updateConstraint(currentCase);
+
+            }
+
+            return true;
+        }
+        else if(possibleValues.size() == 1){
+            //Si il n'y a qu'une seule possibilité on met la valeur directement
+            currentCase.setValue(possibleValues[0]);
+            updateConstraint(currentCase);
+            return true;
+        }
+
     }
-
     return false;
-
 }

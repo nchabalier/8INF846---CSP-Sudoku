@@ -14,9 +14,11 @@
 using namespace std;
 class Carte {
     public:
+
         Carte(string file);
         Carte(int sizeX, int sizeY);
-        //Carte(const Carte &carte);
+        Carte(const Carte &carte);
+
         ~Carte();
 
         int getSize() const;
@@ -42,6 +44,7 @@ class Carte {
         int m_sizeX;
         int m_sizeY;
         vector<Case> m_cases;
+        vector<pair<vector<Case>, vector<int>>> m_saved_cases;
         std::mt19937_64 randomGenerator;
 };
 

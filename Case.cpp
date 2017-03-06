@@ -45,6 +45,12 @@ void Case::addConstraint(int value) {
     }
 }
 
+void Case::removeConstraint(int oldValue) {
+        if(std::find(m_constraint.begin(), m_constraint.end(), oldValue) != m_constraint.end()) {
+            m_constraint.erase(std::find(m_constraint.begin(), m_constraint.end(), oldValue));
+        }
+}
+
 void Case::setValue(int value) {
     m_value = value;
 }
@@ -60,3 +66,5 @@ bool Case::isValuePossible(int value) const {
 std::vector<int> Case::getConstraints() const {
     return m_constraint;
 }
+
+

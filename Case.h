@@ -19,6 +19,7 @@ class Case {
     int getPositionY() const;
     int getValue() const;
     void addConstraint(int value);
+    void removeConstraint(int oldValue);
     void setValue(int value);
     int getNumberOfPossiblities() const;
     bool isValuePossible(int value) const;

@@ -4,7 +4,7 @@
 
 int main() {
 
-    Carte carte = Carte("../data/grid.txt");
+    Carte carte = Carte("../data/grid2.txt");
     cout << carte << endl;
     vector<pair<Case, vector<int>>> csp;
 
@@ -13,8 +13,7 @@ int main() {
     }
 
     carte.ac3(csp);
-    cout << "NOUVEAU TOUR : " << endl;
-    cout << carte << endl;
+
 
 
     /*while(carte.ac3()) {
